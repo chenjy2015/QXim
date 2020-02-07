@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="chat_more">
+        <item>照片</item>
+        <item>拍摄</item>
+        <item>视频通话</item>
+        <item>位置</item>
+        <item>红包</item>
+        <item>转账</item>
+        <item>语音输入</item>
+        <item>收藏</item>
+        <item>个人名片</item>
+        <item>文件</item>
+        <item>卡券</item>
+    </string-array>
+
+    <integer-array name="chat_more_icon">
+        <item>@drawable/ic_photo</item>
+        <item>@drawable/ic_camera</item>
+        <item>@drawable/ic_video</item>
+        <item>@drawable/ic_location</item>
+        <item>@drawable/ic_red_packet</item>
+        <item>@drawable/ic_transfer_accounts</item>
+        <item>@drawable/ic_camera</item>
+        <item>@drawable/ic_voice</item>
+        <item>@drawable/ic_collection</item>
+        <item>@drawable/ic_personal</item>
+        <item>@drawable/ic_file</item>
+        <item>@drawable/ic_card_ticket</item>
+    </integer-array>
+</resources>

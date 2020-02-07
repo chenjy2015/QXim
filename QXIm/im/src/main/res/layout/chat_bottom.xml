@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/default_bg_f5f5f5"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_6">
+
+        <ImageView
+            android:id="@+id/iv_voice"
+            android:layout_width="@dimen/dp_26"
+            android:layout_height="@dimen/dp_26"
+            android:src="@drawable/ic_voice_circle" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_6"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect_white_4">
+
+            <androidx.emoji.widget.EmojiEditText
+                android:id="@+id/et_chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:hint=""
+                android:imeOptions="actionSend"
+                android:inputType="text"
+                android:paddingLeft="@dimen/dp_3"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingRight="@dimen/dp_3"
+                android:paddingBottom="@dimen/dp_3"
+                android:text=""
+                android:textColor="@color/text_color_333"
+                android:textSize="@dimen/sp_14" />
+
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_emoji"
+            android:layout_width="@dimen/dp_26"
+            android:layout_height="@dimen/dp_26"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_6"
+            android:src="@drawable/ic_emoji_3" />
+
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="@dimen/dp_26"
+            android:layout_height="@dimen/dp_26"
+            android:src="@drawable/ic_add" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

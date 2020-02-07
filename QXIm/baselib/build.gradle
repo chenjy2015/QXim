@@ -1,0 +1,144 @@
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.alibaba.arouter'
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+        arg("AROUTER_GENERATE_DOC", "enable")
+    }
+}
+//1. 定义 config 变量
+def config = rootProject.ext
+
+android {
+    compileSdkVersion config.android.compileSdkVersion
+    buildToolsVersion config.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion config.android.minSdkVersion
+        targetSdkVersion config.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation config.android.appcompat
+        testImplementation config.android.junit
+        androidTestImplementation config.android.test_runner
+        androidTestImplementation config.android.test_espresso
+
+        //recyclerview
+        api config.dependencies.recyclerview
+        api config.dependencies.flexibledivider
+
+        //kotlin
+        implementation config.android.kotlin_stdlib_jdk7
+        kapt config.dependencies.databinding_compiler
+
+        //alibaba arouter
+        api config.dependencies.arouterApi
+        //注意！arouter-compiler 这个依赖必须在build.gradle中声明，只在base_module中声明然后引用base_module中引用是无效的！
+        kapt config.dependencies.arouterCompiler
+
+        // multitype
+        api config.dependencies.multitype
+        api config.dependencies.blankj
+
+        //rxjava
+//        implementation config.dependencies.rxjava
+        api config.dependencies.rxbinding
+        api config.dependencies.rxlifecycle
+        api config.dependencies.rxlifecycle_components
+        api config.dependencies.rxpermissions
+
+        //http
+        api config.dependencies.okhttp3
+        api config.dependencies.okhttp3_interceptor
+        api config.dependencies.retrofit2
+        api config.dependencies.retrofit2_adapter
+        api config.dependencies.converter_gson
+        implementation (config.dependencies.logging_interceptor){
+            exclude group: 'org.json', module: 'json'
+        }
+
+        //ok http Utils
+        implementation config.dependencies.okhttp_utils
+
+        //glide
+        api config.dependencies.glide
+        annotationProcessor config.dependencies.glide_compiler
+
+        //rxbus
+        api config.dependencies.rxbus
+
+        //x5web
+        api config.dependencies.x5web
+
+        //glide
+        // If you want to use the GPU Filters
+        api config.dependencies.glide_transformations
+        // If you want to use the GPU Filters
+        api config.dependencies.glide_gpuimage
+
+        //refresh recyclerview
+        api config.dependencies.refresh_layout_kernel
+        api config.dependencies.refresh_layout_classics
+        api config.dependencies.refresh_layout_radar
+        api config.dependencies.refresh_layout_falsify
+        api config.dependencies.refresh_layout_material
+        api config.dependencies.refresh_layout_two_level
+        api config.dependencies.refresh_layout_ball
+        api config.dependencies.refresh_layout_footer
+
+        //dialog
+        api config.dependencies.dialogs_core
+        api config.dependencies.dialogs_input
+        api config.dependencies.dialogs_files
+        api config.dependencies.dialogs_color
+        api config.dependencies.dialogs_datetime
+        api config.dependencies.dialogs_bottomsheets
+        api config.dependencies.dialogs_lifecycle
+
+        //banner
+        api config.dependencies.xbanner
+
+        //marquee 跑马灯
+        api config.dependencies.marquee
+
+        //时间轴
+//        api config.dependencies.timeline
+
+        //emoji
+        api "com.android.support:support-emoji-bundled:28.0.0"
+        api "com.android.support:support-emoji-appcompat:28.0.0"
+        api 'com.android.support:support-emoji:28.0.0'
+    }
+}

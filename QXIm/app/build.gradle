@@ -1,0 +1,137 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+        arg("AROUTER_GENERATE_DOC", "enable")
+    }
+}
+//1. 定义 config 变量
+def config = rootProject.ext
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+android {
+    compileSdkVersion config.android.compileSdkVersion
+    buildToolsVersion config.android.buildToolsVersion
+    defaultConfig {
+        applicationId "com.example.qxim"
+        minSdkVersion config.android.minSdkVersion
+        targetSdkVersion config.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        flavorDimensions "versionCode"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "bcd43f33bc6aea366660077e", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
+        multiDexEnabled true
+    }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    signingConfigs {
+
+        debug {
+            keyAlias 'qx2020'
+            keyPassword 'qx2020'
+            storeFile file('../debug.jks')
+            storePassword 'qx2020'
+        }
+
+        release {
+            keyAlias 'qx2020'
+            keyPassword 'qx2020'
+            storeFile file('../debug.jks')
+            storePassword 'qx2020'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            // 此处的lingzhu_app_name 是动态添加的 manifest.xml中引用的就是此处 string.xml中不能有一样的否则会报错
+            resValue "string", "lingzhu_app_name", "全信"
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+            // 此处的lingzhu_app_name 是动态添加的 manifest.xml中引用的就是此处 string.xml中不能有一样的否则会报错
+            resValue "string", "lingzhu_app_name", "全信(开发版)"
+        }
+    }
+
+    productFlavors {
+        Offline {
+            applicationId "com.example.qxim.dev"
+            manifestPlaceholders = [app_name: "全信(开发版)", icon: "@mipmap/ic_launcher"]
+            resValue("string", "baseUrl", "xxxxxxx")
+        }
+        Online {
+            applicationId "com.example.qxim"
+            manifestPlaceholders = [app_name: "全信", icon: "@mipmap/ic_launcher"]
+            resValue("string", "baseUrl", "xxxxxxx")
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def fileName = "qxim" + "_V${defaultConfig.versionName}_C${defaultConfig.versionCode}_" + releaseTime() + "_" + variant.name + ".apk"
+            outputFileName = fileName
+        }
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation config.android.appcompat
+    implementation config.android.core_ktx
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation config.android.junit
+    implementation config.android.constraintlayout
+    androidTestImplementation config.android.test_runner
+    androidTestImplementation config.android.test_espresso
+
+    implementation config.android.multidex
+
+    implementation project(':baselib')
+    if (rootProject.isNeedLogin.toBoolean()) {
+        implementation project(':login')
+    }
+    if (rootProject.isNeedIm.toBoolean()) {
+        implementation project(':im')
+    }
+    //注意！arouter-compiler 这个依赖必须在build.gradle中声明，只在base_module中声明然后引用base_module中引用是无效的！
+    kapt config.dependencies.arouterCompiler
+//    implementation conf
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}
